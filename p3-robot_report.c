@@ -9,7 +9,7 @@
 #include <math.h>
 
 static int shoulder = 0, elbow = 0, thigh = 0, shin = 0;
-static float theta = 0, rad = 0;
+static float fast = 0, rad = 0;
 
 void myInit(char *progname)
 {
@@ -113,7 +113,7 @@ void myDisplay(void)
 				glutWireCube(1.0);
 			glPopMatrix();
 
-			glRotated((double)-thigh -30 , 1.0, 0.0, 0.0);
+			glRotated((double)-thigh -15 , 1.0, 0.0, 0.0);
 
 			glTranslated(0.0, -1.5, 0.0);
 			glPushMatrix();
@@ -122,7 +122,7 @@ void myDisplay(void)
 			glPopMatrix();
 
 			glTranslated(0.0, -1.5, 0.0);
-			glRotated((double)-shin , 1.0, 0.0, 0.0);
+			glRotated((double)-shin +15 , 1.0, 0.0, 0.0);
 			glTranslated(0.0, -1.0, 0.0);
 			glPushMatrix();
 				glScaled(1.0, 2.0, 1.0);
@@ -139,7 +139,7 @@ void myDisplay(void)
 				glutWireCube(1.0);
 			glPopMatrix();
 
-			glRotated((double)thigh -30, 1.0, 0.0, 0.0);
+			glRotated((double)thigh -15, 1.0, 0.0, 0.0);
 
 			glTranslated(0.0, -1.5, 0.0);
 			glPushMatrix();
@@ -148,7 +148,7 @@ void myDisplay(void)
 			glPopMatrix();
 
 			glTranslated(0.0, -1.5, 0.0);
-			glRotated((double)shin , 1.0, 0.0, 0.0);
+			glRotated((double)shin +15 , 1.0, 0.0, 0.0);
 			glTranslated(0.0, -1.0, 0.0);
 			glPushMatrix();
 				glScaled(1.0, 2.0, 1.0);
@@ -178,6 +178,7 @@ void myReshape (int width, int height)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	gluLookAt(0.0, 0.0, 15.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+
 
 }
 
@@ -216,6 +217,10 @@ void myKeyboard (unsigned char key, int x, int y)
 	// 		shin = (shin - 5) % 360;
 	// 		glutPostRedisplay();
 	// 		break;
+		case 'u':
+			fast = 0.0002 - fast;
+			break;
+
 		case 27:
 			exit(0);
 			break;
@@ -228,8 +233,8 @@ void myKeyboard (unsigned char key, int x, int y)
 void myIdle(void)
 {
 
-	theta = fmod(theta + 0.1, 360.0);
-	rad = fmod(rad + 0.0002, 2.0);
+	//theta = fmod(theta + 0.1, 360.0);
+	rad = fmod(rad + 0.0001 + fast, 2.0);
 	shoulder = sin(rad* M_PI )*60;
 
 	elbow = -sin(rad* M_PI)*60-90;
