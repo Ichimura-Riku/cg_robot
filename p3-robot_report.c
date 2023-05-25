@@ -3,11 +3,13 @@
  * Examination of world-local coordinates, modeling transfomation and
  * operation of matrix stack.
  */
+#define _USE_MATH_DEFINES
 #include <stdlib.h>
 #include <GL/glut.h>
 #include <math.h>
 
-static int shoulder = 0, elbow = 0, thigh = 0, shin = 0, theta = 0;
+static int shoulder = 0, elbow = 0, thigh = 0, shin = 0;
+static float theta = 0, rad = 0;
 
 void myInit(char *progname)
 {
@@ -18,9 +20,12 @@ void myInit(char *progname)
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 }
 
+
+
 void myDisplay(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT);
+
 
 
 
@@ -53,7 +58,7 @@ void myDisplay(void)
 			glPopMatrix();
 
 			glTranslated(0.0, -1.0,  0.0);
-			glRotated((double)-elbow, 1.0, 0.0, 0.0);
+			glRotated((double)elbow, 1.0, 0.0, 0.0);
 			glTranslated(0.0, -1.0, 0.0);
 			glPushMatrix();
 				glScaled(1.0, 2.0, 1.0);
@@ -69,7 +74,7 @@ void myDisplay(void)
 				glutWireCube(1.0);
 			glPopMatrix();
 
-			glRotated((double)shoulder, 1.0, 0.0, 0.0);
+			glRotated((double)-shoulder, 1.0, 0.0, 0.0);
 			glTranslated(0.0, -1.0, 0.0);
 			glPushMatrix();
 				glScaled(1.0, -2.0, 1.0);
@@ -78,7 +83,7 @@ void myDisplay(void)
 
 
 			glTranslated(0.0, -1.0, 0.0);
-			glRotated((double)-elbow, 1.0, 0.0, 0.0);
+			glRotated((double)-elbow+180, 1.0, 0.0, 0.0);
 			glTranslated(0.0, -1.0, 0.0);
 			glPushMatrix();
 				glScaled(1.0, 2.0, 1.0);
@@ -108,7 +113,7 @@ void myDisplay(void)
 				glutWireCube(1.0);
 			glPopMatrix();
 
-			glRotated((double)thigh, 1.0, 0.0, 0.0);
+			glRotated((double)-thigh -30 , 1.0, 0.0, 0.0);
 
 			glTranslated(0.0, -1.5, 0.0);
 			glPushMatrix();
@@ -117,7 +122,7 @@ void myDisplay(void)
 			glPopMatrix();
 
 			glTranslated(0.0, -1.5, 0.0);
-			glRotated((double)shin, 1.0, 0.0, 0.0);
+			glRotated((double)-shin , 1.0, 0.0, 0.0);
 			glTranslated(0.0, -1.0, 0.0);
 			glPushMatrix();
 				glScaled(1.0, 2.0, 1.0);
@@ -134,7 +139,7 @@ void myDisplay(void)
 				glutWireCube(1.0);
 			glPopMatrix();
 
-			glRotated((double)thigh, 1.0, 0.0, 0.0);
+			glRotated((double)thigh -30, 1.0, 0.0, 0.0);
 
 			glTranslated(0.0, -1.5, 0.0);
 			glPushMatrix();
@@ -143,7 +148,7 @@ void myDisplay(void)
 			glPopMatrix();
 
 			glTranslated(0.0, -1.5, 0.0);
-			glRotated((double)shin, 1.0, 0.0, 0.0);
+			glRotated((double)shin , 1.0, 0.0, 0.0);
 			glTranslated(0.0, -1.0, 0.0);
 			glPushMatrix();
 				glScaled(1.0, 2.0, 1.0);
@@ -172,7 +177,7 @@ void myReshape (int width, int height)
 	gluPerspective(60.0, (double)width/(double)height, 0.1, 20.0);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(0.0, 0.0, 10.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+	gluLookAt(0.0, 0.0, 15.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 
 }
 
@@ -222,14 +227,16 @@ void myKeyboard (unsigned char key, int x, int y)
 
 void myIdle(void)
 {
-	theta = fmod(theta + 0.5, 360.0);
-	shoulder = theta;
 
-	elbow = theta;
+	theta = fmod(theta + 0.1, 360.0);
+	rad = fmod(rad + 0.0002, 2.0);
+	shoulder = sin(rad* M_PI )*60;
 
-	thigh = theta;
+	elbow = -sin(rad* M_PI)*60-90;
 
-	shin = theta;
+	thigh = sin(rad* M_PI)*30 ;
+
+	shin = -sin(rad* M_PI)*30 ;
 
 	glutPostRedisplay();
 }
